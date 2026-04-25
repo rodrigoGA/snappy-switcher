@@ -55,6 +55,10 @@ flowchart LR
 
 **File**: [`src/hyprland.c`](../src/hyprland.c) -- `parse_clients()`
 
+`parse_clients()` applies the command-line workspace filter and the persistent
+`[general] filter = ...` rules before windows enter MRU sorting or context
+grouping.
+
 ```mermaid
 sequenceDiagram
     participant D as Daemon
@@ -440,6 +444,8 @@ typedef enum { MODE_OVERVIEW, MODE_CONTEXT } ViewMode;
 
 typedef struct {
   ViewMode mode;        // Overview or Context
+  WindowFilterRule filter_rules[16];
+  int filter_rule_count;
   int max_cols;         // Grid column limit
   int error_width;      // Error banner width
   int error_height;     // Error banner height

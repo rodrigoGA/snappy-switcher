@@ -107,6 +107,7 @@ flowchart LR
 | Key | Values | Default | Description |
 |-----|--------|---------|-------------|
 | `mode` | `overview`, `context` | `context` | Window grouping mode |
+| `filter` | `none`, `workspace:<id>`, `workspace:current`, `monitor:<id>`, `monitor:current`, `!workspace:<id>`, `!monitor:<id>` | `!workspace:-1` | Persistent window filter rules |
 | `show_workspace_badge` | `true`, `false` | `true` | Show workspace indicator badge on each card |
 | `follow_monitor` | `true`, `false` | `false` | Panel follows the focused monitor |
 | `sticky_mode` | `true`, `false` | `false` | When true, opening the switcher retains focus on the currently active window instead of immediately jumping to the previous window. |
@@ -122,6 +123,31 @@ flowchart LR
 [general]
 mode = context  # Enable intelligent grouping
 ```
+
+### Window Filter
+
+`filter` applies persistent rules to the Hyprland client list before sorting,
+context grouping, and rendering. Use `none` to disable config filtering.
+
+```ini
+[general]
+# Skip special workspaces, then include only the active workspace.
+filter = !workspace:-1,workspace:current
+```
+
+Rules are comma-separated. Positive rules include matching windows; rules
+prefixed with `!` exclude matching windows. If at least one positive rule is
+present, windows must match one of the positive rules and none of the exclude
+rules.
+
+| Rule | Behavior |
+|------|----------|
+| `workspace:<id>` | Match a Hyprland workspace ID |
+| `workspace:current` | Match the currently active workspace |
+| `monitor:<id>` | Match a Hyprland monitor ID |
+| `monitor:current` | Match the currently focused monitor |
+| `!workspace:<id>` | Exclude windows on a workspace ID |
+| `!monitor:<id>` | Exclude windows on a monitor ID |
 
 ### Workspace Badge
 

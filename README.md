@@ -243,6 +243,29 @@ Tells the daemon which key to watch for release so it can dismiss the switcher.
 
 Filter the window list to the currently active workspace.
 
+### Config `filter`
+
+`filter` in `[general]` applies a persistent window filter before sorting and
+rendering. Rules can be comma-separated and can either include or exclude
+matches:
+
+```ini
+[general]
+# Show only windows on the active workspace and skip special workspaces.
+filter = !workspace:-1,workspace:current
+```
+
+Supported rules:
+
+| Rule | Description |
+|------|-------------|
+| `none` | Disable persistent config filtering |
+| `workspace:<id>` | Include windows on a workspace ID |
+| `workspace:current` | Include windows on the active workspace |
+| `monitor:<id>` | Include windows assigned to a monitor ID |
+| `monitor:current` | Include windows assigned to the focused monitor |
+| `!workspace:<id>` / `!monitor:<id>` | Exclude matching windows |
+
 ### `--silent`
 
 Perform an instant MRU switch without creating any Wayland UI. The Cairo rendering pipeline is bypassed entirely — the daemon queries the window list, picks the target, and calls `activate_window()` directly. If the GUI panel is already open, it is torn down before the silent switch executes.
@@ -366,6 +389,7 @@ name = catppuccin-mocha.ini
 ```ini
 [general]
 mode = context
+filter = !workspace:-1
 follow_monitor = true
 show_workspace_badge = true
 sticky_mode = false
